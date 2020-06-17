@@ -1,8 +1,7 @@
 {
     "test1": "super test",
-    "visits": 91,
-    "users": {},
-    "user": {
+    "visits": 350,
+    "users": {
         "tal": {
             "username": "tal",
             "password": "123456",
