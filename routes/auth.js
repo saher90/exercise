@@ -3,44 +3,66 @@ const router = express.Router();
 const db = require("../data/database")
 const jwt = require("jsonwebtoken");
 
-const ACCESS_TOKEN_SECRET = "some long secret";
+const JWT_SECRET = "some long secret";
+const COOKIE_NAME = "jwt-access-token";
 
 router.post("/login", (req, res) => {
+    // make sure request body exist
     if (!req.body) {
         return res.sendStatus(400);
     }
+
+    // make sure user exists and passwords match
+    // note: this is a bad practice to store raw passwords
     const { username, password } = req.body;
     if (!db.exists(`/users/${username}`)) {
         return res.sendStatus(400);
     }
+
     const user = db.getData(`/users/${username}`);
     if (user.password !== password) {
         return res.sendStatus(400);
     }
-    const payload = { username: user.username };
-    const access_token = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
-    res.cookie("jwt-access-token", access_token);
-    res.send({ access_token });
+
+    // create a jwt token for the user
+    const payload = { username: user.username, joined: user.joined };
+    const access_token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });
+    // set cookie for the client with the jwt
+    res.cookie(COOKIE_NAME, access_token, { httpOnly: true });
+    res.redirect("/");
 });
 
 router.post("/register", (req, res) => {
+    // make sure request body exist
     if (!req.body) {
         return res.sendStatus(400);
     }
+    // make sure user does not exist
     const { username, password } = req.body;
     if (db.exists(`/users/${username}`)) {
         return res.sendStatus(400);
     }
+
+    // create a new user record in the json db
     const user = {
         username,
         password,
         joined: new Date().toISOString()
     }
     db.push(`/user/${username}`, user);
+
+    // create a jwt token for the user
     const payload = { username: user.username, joined: user.joined };
-    const access_token = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
-    res.cookie("jwt-access-token", access_token);
-    res.send({ access_token });
+    const access_token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });
+
+    // set cookie for the client with the jwt
+    res.cookie(COOKIE_NAME, access_token, { httpOnly: true });
+    res.redirect("/");
 });
 
+router.get("/logout", (req, res) => {
+    // remove the cookie to perform a logout
+    res.clearCookie(COOKIE_NAME);
+    res.redirect("/");
+})
 module.exports = router;

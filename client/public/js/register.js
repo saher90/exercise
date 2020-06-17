@@ -3,7 +3,6 @@
 const form = document.querySelector("form");
 form.addEventListener("submit", function handleFormSubmit(e) {
     e.preventDefault();
-    console.log(form)
     const username = form.children.username.value;
     const password = form.children.password.value;
     fetch("/register", {
