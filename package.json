@@ -1,29 +1,44 @@
 {
-    "name": "project-starter",
-    "version": "1.0.0",
-    "description": "",
-    "main": "server.js",
-    "scripts": {
-        "dev": "nodemon server.js -e js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Abziz/project-starter.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/Abziz/project-starter/issues"
-    },
-    "homepage": "https://github.com/Abziz/project-starter#readme",
-    "dependencies": {
-        "cookie-parser": "^1.4.5",
-        "express": "^4.17.1",
-        "jsonwebtoken": "^8.5.1",
-        "node-json-db": "^1.1.0"
-    },
-    "devDependencies": {
-        "nodemon": "^2.0.4"
-    }
+	"name": "project-starter",
+	"version": "1.0.0",
+	"description": "",
+	"main": "server.js",
+	"scripts": {
+		"dev": "nodemon server.js -e js",
+		"test:lint": "eslint .",
+		"test:jest": "jest .",
+		"test": "npm run test:lint && npm run test:jest"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Abziz/project-starter.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Abziz/project-starter/issues"
+	},
+	"homepage": "https://github.com/Abziz/project-starter#readme",
+	"dependencies": {
+		"cookie-parser": "^1.4.5",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"node-json-db": "^1.1.0"
+	},
+	"devDependencies": {
+		"@types/jest": "^26.0.0",
+		"eslint": "^7.2.0",
+		"eslint-config-airbnb-base": "^14.2.0",
+		"eslint-plugin-import": "^2.21.2",
+		"husky": "^4.2.5",
+		"jest": "^26.0.1",
+		"nodemon": "^2.0.4"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm test",
+			"pre-push": "npm test"
+		}
+	}
 }

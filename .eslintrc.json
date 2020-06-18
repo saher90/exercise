@@ -1,0 +1,23 @@
+{
+	"env": {
+		"browser": true,
+		"commonjs": true,
+		"es2020": true,
+		"jest": true,
+		"node": true
+	},
+	"extends": [
+		"airbnb-base"
+	],
+	"parserOptions": {
+		"ecmaVersion": 11
+	},
+	"rules": {
+		"no-tabs": "off",
+		"consistent-return": "off",
+		"indent": [
+			"error",
+			"tab"
+		]
+	}
+}
